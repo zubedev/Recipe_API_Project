@@ -37,6 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # Apps
+    'Recipe_Core_App.apps.RecipeCoreAppConfig',
     'Recipe_API_App.apps.RecipeApiAppConfig',
 ]
 
@@ -100,6 +102,9 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+
+AUTH_USER_MODEL = 'Recipe_Core_App.CustomUser'
 
 
 # Internationalization
