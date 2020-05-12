@@ -8,20 +8,29 @@ from django.db import models
 class CustomUserManager(BaseUserManager):
     """Custom User Manager overridden from BaseUserManager for CustomUser"""
 
-    def create_user(self, email, password=None, **extra_fields):
+    def _create_user(self, email, password=None, **extra_fields):
         """Creates and returns a new user using an email address"""
         if not email:  # check for an empty email
             raise ValueError("User must set an email address")
         else:  # normalizes the provided email
             email = self.normalize_email(email)
-        # set defaults
-        extra_fields.setdefault('is_staff', False)
-        extra_fields.setdefault('is_superuser', False)
         # create user
         user = self.model(email=email, **extra_fields)
         user.set_password(password)  # hashes/encrypts password
         user.save(using=self._db)  # safe for multiple databases
         return user
+
+    def create_user(self, email, password=None, **extra_fields):
+        # set defaults
+        extra_fields.setdefault('is_staff', False)
+        extra_fields.setdefault('is_superuser', False)
+        return self._create_user(email, password, **extra_fields)
+
+    def create_superuser(self, email, password=None, **extra_fields):
+        # set defaults
+        extra_fields.setdefault('is_staff', True)
+        extra_fields.setdefault('is_superuser', True)
+        return self._create_user(email, password, **extra_fields)
 
 
 class CustomUser(AbstractBaseUser, PermissionsMixin):

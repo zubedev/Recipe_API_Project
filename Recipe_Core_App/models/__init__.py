@@ -1,2 +1,2 @@
 """models/__init__.py"""
-from .custom_user import *
+from .custom_user import CustomUser
