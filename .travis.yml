@@ -9,5 +9,10 @@ services:
 
 before_script: pip install docker-compose
 
+install: pip install codecov
+
 script:
   - docker-compose run app sh -c "python manage.py test && flake8 -v"
+
+after_success:
+  - codecov
