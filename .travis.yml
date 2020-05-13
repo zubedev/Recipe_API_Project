@@ -9,11 +9,5 @@ services:
 
 before_script: pip install docker-compose
 
-install: pip install codecov
-
 script:
-  - mkdir reports
-  - docker-compose run "$PWD/reports:/reports" app sh -c "pytest --cov=./ && mv coverage.txt reports && flake8"
-
-after_success:
-  - codecov
+  - docker-compose run app sh -c "pytest --cov=./ && flake8"
