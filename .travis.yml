@@ -9,10 +9,5 @@ services:
 
 before_script: pip install docker-compose
 
-install: pip install codecov
-
 script:
-  - docker-compose run $(bash <(curl -s https://codecov.io/env)) app sh -c "pytest --cov=./ && flake8"
-
-after_success:
-  - codecov
+  - docker-compose run $(bash <(curl -s https://codecov.io/env)) app sh -c "pytest --cov=./ && flake8 && codecov"
