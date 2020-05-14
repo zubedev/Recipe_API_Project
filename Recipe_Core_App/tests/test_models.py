@@ -3,6 +3,13 @@
 from django.contrib.auth import get_user_model
 from django.test import TestCase
 
+from Recipe_Core_App import models
+
+
+def sample_user(email="user@sample.com", password="samplepwd"):
+    """Sample user to be used for tests"""
+    return get_user_model().objects.create_user(email, password)
+
 
 class ModelsTest(TestCase):
     """Aggregated Test Class for all Recipe Core App Models"""
@@ -64,3 +71,11 @@ class ModelsTest(TestCase):
         # assert
         self.assertTrue(user.is_superuser)
         self.assertTrue(user.is_staff)
+
+    def test_tag_str(self):
+        """Tests the tag string representation"""
+        tag = models.Tag.objects.create(
+            user=sample_user(),
+            name="Vegan"
+        )
+        self.assertEqual(tag.name, str(tag))

@@ -1,8 +1,13 @@
 """Recipe API App - urls.py"""
 
-from django.urls import path
+from django.urls import path, include
+
+from rest_framework.routers import DefaultRouter
 
 from Recipe_API_App import views
+
+router = DefaultRouter()
+router.register('tags', views.TagViewSet)
 
 app_name = 'api'
 
@@ -13,4 +18,5 @@ urlpatterns = [
          view=views.CreateTokenView.as_view(),),
     path(route='me/', name='me',
          view=views.ManageUserView.as_view(),),
+    path('', include(router.urls)),
 ]
