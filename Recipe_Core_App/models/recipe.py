@@ -1,7 +1,17 @@
 """Recipe Core App - recipe.py models"""
 
+import os
+import uuid
+
 from django.conf import settings
 from django.db import models
+
+
+def recipe_image_file_path(instance, filename):
+    """Generate file path for recipe image"""
+    ext = filename.split('.')[-1]  # get the file extension
+    filename = f'{uuid.uuid4()}.{ext}'
+    return os.path.join('recipe/', filename)
 
 
 class Tag(models.Model):
@@ -41,6 +51,7 @@ class Recipe(models.Model):
     tags = models.ManyToManyField(Tag)
     duration = models.PositiveIntegerField()
     price = models.DecimalField(max_digits=5, decimal_places=2)
+    image = models.ImageField(upload_to=recipe_image_file_path, null=True)
     is_active = models.BooleanField('Active', default=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True, null=True)
     updated_at = models.DateTimeField(auto_now=True, null=True)
