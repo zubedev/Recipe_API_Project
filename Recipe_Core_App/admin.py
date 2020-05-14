@@ -47,3 +47,15 @@ class IngredientAdmin(admin.ModelAdmin):
     list_filter = ('is_active', )
     search_fields = ('id', 'name', 'user')
     ordering = ('name', 'user', 'created_at', 'updated_at')
+
+
+@admin.register(models.Recipe)
+class RecipeAdmin(admin.ModelAdmin):
+    """Admin for Recipe model"""
+    model = models.Recipe
+    readonly_fields = ('created_at', 'updated_at')
+    list_display = ('title', 'user', 'duration', 'price', 'is_active',
+                    'created_at', 'updated_at')
+    list_filter = ('is_active', 'tags', 'ingredients')
+    search_fields = ('id', 'title', 'user', 'tags', 'ingredients')
+    ordering = ('title', 'user', 'created_at', 'updated_at')
