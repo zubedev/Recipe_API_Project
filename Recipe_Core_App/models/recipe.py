@@ -16,3 +16,17 @@ class Tag(models.Model):
     def __str__(self):
         """Tag string representation"""
         return self.name
+
+
+class Ingredient(models.Model):
+    """Ingredient to be used for a recipe"""
+    name = models.CharField(max_length=255, unique=True)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL,
+                             on_delete=models.CASCADE)
+    is_active = models.BooleanField('Active', default=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True, null=True)
+    updated_at = models.DateTimeField(auto_now=True, null=True)
+
+    def __str__(self):
+        """Ingredient string representation"""
+        return self.name

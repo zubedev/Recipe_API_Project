@@ -11,7 +11,7 @@ from Recipe_Core_App.models import Tag
 from Recipe_API_App.serializers import TagSerializer
 
 
-TAG_URL = reverse('api:tag-list')
+TAGS_URL = reverse('api:tag-list')
 
 
 class PublicTagsApiTests(TestCase):
@@ -23,7 +23,7 @@ class PublicTagsApiTests(TestCase):
 
     def test_login_required(self):
         """Test that login required for retrieving tags"""
-        res = self.client.get(TAG_URL)
+        res = self.client.get(TAGS_URL)
         self.assertEqual(res.status_code, status.HTTP_401_UNAUTHORIZED)
 
 
@@ -46,7 +46,7 @@ class PrivateTagsApiTests(TestCase):
         tags = Tag.objects.all().order_by('-name')
         serializer = TagSerializer(tags, many=True)
         # request/response
-        res = self.client.get(TAG_URL)
+        res = self.client.get(TAGS_URL)
         # test/assert
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         self.assertEqual(res.data, serializer.data)
@@ -60,7 +60,7 @@ class PrivateTagsApiTests(TestCase):
         Tag.objects.create(user=user2, name='Fruity')
         tag = Tag.objects.create(user=self.user, name='Comfort Food')
         # request/response
-        res = self.client.get(TAG_URL)
+        res = self.client.get(TAGS_URL)
         # test/assert
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         self.assertEqual(len(res.data), 1)
@@ -69,7 +69,7 @@ class PrivateTagsApiTests(TestCase):
     def test_create_tag_successful(self):
         """Test creating a new tag"""
         data = {'name': 'Simple'}
-        self.client.post(TAG_URL, data=data)
+        self.client.post(TAGS_URL, data=data)
 
         tag_exists = Tag.objects.filter(
             user=self.user,
@@ -81,5 +81,5 @@ class PrivateTagsApiTests(TestCase):
     def test_create_tag_invalid(self):
         """Test creating a new tag with invalid data"""
         data = {'name': ''}
-        res = self.client.post(TAG_URL, data=data)
+        res = self.client.post(TAGS_URL, data=data)
         self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)

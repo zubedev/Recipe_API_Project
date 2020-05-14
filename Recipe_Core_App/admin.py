@@ -36,3 +36,14 @@ class TagAdmin(admin.ModelAdmin):
     list_filter = ('is_active', )
     search_fields = ('id', 'name', 'user')
     ordering = ('name', 'user', 'created_at', 'updated_at')
+
+
+@admin.register(models.Ingredient)
+class IngredientAdmin(admin.ModelAdmin):
+    """Admin for Ingredient model"""
+    model = models.Ingredient
+    readonly_fields = ('created_at', 'updated_at')
+    list_display = ('name', 'user', 'is_active', 'created_at', 'updated_at')
+    list_filter = ('is_active', )
+    search_fields = ('id', 'name', 'user')
+    ordering = ('name', 'user', 'created_at', 'updated_at')
