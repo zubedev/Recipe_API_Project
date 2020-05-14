@@ -11,6 +11,7 @@ from rest_framework.test import APIClient
 
 CREATE_USER_URL = reverse('api:create_user')
 CREATE_TOKEN_URL = reverse('api:create_token')
+ME_URL = reverse('api:me')
 
 
 def create_user(**kwargs):
@@ -110,3 +111,43 @@ class PublicUserAPITests(TestCase):
         # assert
         self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertNotIn('token', res.data)
+
+    def test_unauthorized_user_retrieval(self):
+        """Tests that authentication is required for users"""
+        res = self.client.get(ME_URL)
+        self.assertEqual(res.status_code, status.HTTP_401_UNAUTHORIZED)
+
+
+class PrivateUserApiTests(TestCase):
+    """Test API requests that require authentication"""
+
+    def setUp(self):
+        """setup"""
+        self.user = create_user(
+            email="testuser@zube.dev",
+            password="password",
+            name="Test User"
+        )
+        self.client = APIClient()
+        self.client.force_authenticate(user=self.user)
+
+    def test_user_profile_retrieval(self):
+        """Tests retrieval of profile for authenticated user"""
+        res = self.client.get(ME_URL)
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+        self.assertEqual(res.data, {'name': self.user.name,
+                                    'email': self.user.email})
+
+    def test_post_not_allowed_on_me(self):
+        """Tests that POST is not allowed on Me URL"""
+        res = self.client.post(ME_URL, {})
+        self.assertEqual(res.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
+
+    def test_update_user_profile(self):
+        """Tests that user profile can be updated for authenticated user"""
+        data = {'name': 'New Name', 'password': 'testpass'}
+        res = self.client.patch(ME_URL, data=data)
+        self.user.refresh_from_db()
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+        self.assertEqual(self.user.name, data['name'])
+        self.assertTrue(self.user.check_password(data['password']))
