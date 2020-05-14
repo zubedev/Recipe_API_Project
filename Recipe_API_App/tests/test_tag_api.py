@@ -43,7 +43,7 @@ class PrivateTagsApiTests(TestCase):
         """Test retrieving tags"""
         Tag.objects.create(user=self.user, name='Vegan')
         Tag.objects.create(user=self.user, name='Dessert')
-        tags = Tag.objects.all().order_by('-name')
+        tags = Tag.objects.all().order_by('name')
         serializer = TagSerializer(tags, many=True)
         # request/response
         res = self.client.get(TAGS_URL)
