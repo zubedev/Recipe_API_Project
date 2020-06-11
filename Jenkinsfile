@@ -2,20 +2,21 @@ pipeline {
     agent any
 
     stages {
-        stage('Build') {
-            steps {
-                echo 'Building..'
-                sh 'docker-compose build'
-                sh 'docker-compose up -d'
-                sleep 5
-            }
-        }
+        // stage('Build') {
+        //     steps {
+        //         echo 'Building..'
+        //         sh 'docker-compose build'
+        //         sh 'docker-compose up -d'
+        //     }
+        // }
         stage('Test') {
             steps {
                 echo 'Testing..'
+                sh 'docker-compose build'
+                sh 'docker-compose up -d'
                 sh 'docker-compose exec app python manage.py test'
                 sh 'docker-compose exec app flake8'
-                sleep 5
+
             }
         }
         // stage('Deploy') {
