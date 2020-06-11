@@ -12,7 +12,7 @@ pipeline {
         stage('Test') {
             steps {
                 echo 'Testing..'
-                sh 'docker-compose run -rm app sh -c \"python manage.py test && flake8\"'
+                sh 'docker-compose run -rm app python manage.py test'
             }
         }
         // stage('Deploy') {
