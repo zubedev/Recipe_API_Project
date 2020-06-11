@@ -13,7 +13,7 @@ pipeline {
                 sh 'docker-compose up -d'
             }
         }
-        state('Migrate') {
+        stage('Migrate') {
             steps {
                 echo 'Migrating..'
                 sh 'docker-compose exec app python manage.py makemigrations --no-input --merge'
