@@ -11,6 +11,7 @@ pipeline {
                 echo 'Building..'
                 sh 'docker-compose build'
                 sh 'docker-compose up -d'
+                sh 'docker ps -a'
             }
         }
         stage('Test') {
