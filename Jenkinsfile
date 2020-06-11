@@ -6,18 +6,20 @@ pipeline {
     }
 
     environment {
-        GH_SCRIPT = 'repo_state_update.sh'
-        GH_REPO_TOKEN = credentials('GH_Repo_Status')
+        GH_OWNER = 'ziibii88'
         GH_REPO = 'Recipe_API_Project'
-        GH_USERNAME = 'ziibii88'
+        GH_TOKEN = credentials('GH_Repo_Status')
     }
 
     stages {
         stage ('Status') {
             steps {
                 echo 'Updating GitHub status...'
-                sh "chown +x $GH_SCRIPT"
-                sh "./$GH_SCRIPT pending $GH_USERNAME $GH_REPO $GH_REPO_TOKEN $GIT_COMMIT $BUILD_URL"
+                sh """
+                curl "https://api.github.com/repos/$GH_OWNER/$GH_REPO/statuses/$GIT_COMMIT" \
+                  -H "Authorization: token $GH_TOKEN" -X POST \
+                  -d "{\"state\": \"pending\", \"context\": \"continuous-integration/jenkins\", \"description\": \"pending\", \"target_url\": \"$BUILD_URL\"}"
+                """
             }
         }
         stage('Build') {
@@ -47,10 +49,18 @@ pipeline {
             sh 'docker-compose down'
         }
         success {
-            sh "./$GH_SCRIPT success $GH_USERNAME $GH_REPO $GH_REPO_TOKEN $GIT_COMMIT $BUILD_URL"
+            sh """
+                curl "https://api.github.com/repos/$GH_OWNER/$GH_REPO/statuses/$GIT_COMMIT" \
+                  -H "Authorization: token $GH_TOKEN" -X POST \
+                  -d "{\"state\": \"success\", \"context\": \"continuous-integration/jenkins\", \"description\": \"success\", \"target_url\": \"$BUILD_URL\"}"
+                """
         }
         failure {
-            sh "./$GH_SCRIPT failure $GH_USERNAME $GH_REPO $GH_REPO_TOKEN $GIT_COMMIT $BUILD_URL"
+            sh """
+                curl "https://api.github.com/repos/$GH_OWNER/$GH_REPO/statuses/$GIT_COMMIT" \
+                  -H "Authorization: token $GH_TOKEN" -X POST \
+                  -d "{\"state\": \"failure\", \"context\": \"continuous-integration/jenkins\", \"description\": \"failure\", \"target_url\": \"$BUILD_URL\"}"
+                """
         }
     }
 }
