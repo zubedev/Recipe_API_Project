@@ -6,6 +6,7 @@ pipeline {
     }
 
     environment {
+        GH_SCRIPT = 'repo_state_update.sh'
         GH_OWNER = 'ziibii88'
         GH_REPO = 'Recipe_API_Project'
         GH_TOKEN = credentials('GH_Repo_Status')
@@ -15,11 +16,10 @@ pipeline {
         stage ('Status') {
             steps {
                 echo 'Updating GitHub status...'
-                sh """
-                curl "https://api.github.com/repos/$GH_OWNER/$GH_REPO/statuses/$GIT_COMMIT" \
-                  -H "Authorization: token $GH_TOKEN" -X POST \
-                  -d "{\"state\": \"pending\", \"context\": \"continuous-integration/jenkins\", \"description\": \"pending\", \"target_url\": \"$BUILD_URL\"}"
-                """
+                sh "ls -al"
+                sh "chmod 775 $GH_SCRIPT"
+                sh "ls -al"
+                sh "./$GH_SCRIPT pending $GH_OWNER $GH_REPO $GH_TOKEN $GIT_COMMIT $BUILD_URL"
             }
         }
         stage('Build') {
@@ -49,18 +49,10 @@ pipeline {
             sh 'docker-compose down'
         }
         success {
-            sh """
-                curl "https://api.github.com/repos/$GH_OWNER/$GH_REPO/statuses/$GIT_COMMIT" \
-                  -H "Authorization: token $GH_TOKEN" -X POST \
-                  -d "{\"state\": \"success\", \"context\": \"continuous-integration/jenkins\", \"description\": \"success\", \"target_url\": \"$BUILD_URL\"}"
-                """
+            sh "./$GH_SCRIPT success $GH_OWNER $GH_REPO $GH_TOKEN $GIT_COMMIT $BUILD_URL"
         }
         failure {
-            sh """
-                curl "https://api.github.com/repos/$GH_OWNER/$GH_REPO/statuses/$GIT_COMMIT" \
-                  -H "Authorization: token $GH_TOKEN" -X POST \
-                  -d "{\"state\": \"failure\", \"context\": \"continuous-integration/jenkins\", \"description\": \"failure\", \"target_url\": \"$BUILD_URL\"}"
-                """
+            sh "./$GH_SCRIPT failure $GH_OWNER $GH_REPO $GH_TOKEN $GIT_COMMIT $BUILD_URL"
         }
     }
 }
