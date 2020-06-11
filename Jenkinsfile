@@ -5,14 +5,14 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'Building..'
-                docker-compose build
-                docker-compose up -d
+                sh "docker-compose build"
+                sh "docker-compose up -d"
             }
         }
         stage('Test') {
             steps {
                 echo 'Testing..'
-                docker-compose run app sh -c "python manaype.py test && flake8"
+                sh "docker-compose run app sh -c 'python manaype.py test && flake8'"
             }
         }
         // stage('Deploy') {
@@ -24,7 +24,7 @@ pipeline {
 
     post {
         always {
-            docker-compose down
+            sh "docker-compose down"
         }
     }
 }
