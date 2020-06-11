@@ -5,18 +5,18 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'Building..'
-                echo '$PWD'
-                sh 'ls -al'
-                sh "docker-compose build"
-                sh "docker-compose up -d"
+                echo $PWD
+                ls -al
+                docker-compose build
+                docker-compose up -d
             }
         }
         stage('Test') {
             steps {
                 echo 'Testing..'
-                echo '$PWD'
-                sh 'ls -al'
-                sh 'docker-compose run app sh -c "python manage.py test && flake8"'
+                echo $PWD
+                ls -al
+                docker-compose run -rm app sh -c "python manage.py test && flake8"
             }
         }
         // stage('Deploy') {
@@ -28,7 +28,7 @@ pipeline {
 
     post {
         always {
-            sh "docker-compose down"
+            docker-compose down
         }
     }
 }
