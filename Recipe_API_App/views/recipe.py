@@ -19,7 +19,13 @@ class BaseRecipeAttrViewSet(viewsets.GenericViewSet,
 
     def get_queryset(self):
         """Returns objects for authenticated user only"""
-        return self.queryset.filter(user=self.request.user)
+        assigned_only = bool(
+            int(self.request.query_params.get('assigned_only', 0))
+        )
+        qs = self.queryset
+        if assigned_only:
+            qs = qs.filter(recipe__isnull=False)
+        return qs.filter(user=self.request.user).order_by('name').distinct()
 
     def perform_create(self, serializer):
         """Create new object with authenticated user"""
@@ -45,9 +51,22 @@ class RecipeViewSet(viewsets.ModelViewSet):
     permission_classes = (IsAuthenticated, )
     queryset = Recipe.objects.all()
 
+    def _params_to_ints(self, qs):
+        """Converts a list of strings ids to a list of ints"""
+        return [int(str_id) for str_id in qs.split(',')]
+
     def get_queryset(self):
         """Returns objects for authenticated user only"""
-        return self.queryset.filter(user=self.request.user)
+        tags = self.request.query_params.get('tags')
+        ingredients = self.request.query_params.get('ingredients')
+        qs = self.queryset
+        if tags:
+            tag_ids = self._params_to_ints(tags)
+            qs = qs.filter(tags__id__in=tag_ids)
+        if ingredients:
+            ingredients_ids = self._params_to_ints(ingredients)
+            qs = qs.filter(ingredients__id__in=ingredients_ids)
+        return qs.filter(user=self.request.user)
 
     def get_serializer_class(self):
         """Returns appropriate serializer class"""
