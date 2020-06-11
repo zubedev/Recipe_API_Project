@@ -17,7 +17,7 @@ pipeline {
                 sh '''
                    curl "https://api.github.com/repos/$GH_USERNAME/$GH_REPO/statuses/$GIT_COMMIT?access_token=$GH_REPO_TOKEN" \
                        -H "Content-Type: application/json" -X POST \
-                       -d "{\"state\": \"pending\",\"context\": \"continuous-integration/jenkins\", \"description\": \"The build is pending..\", \"target_url\": \"$BUILD_URL\"}"
+                       -d "{\"state\": \"pending\",\"context\": \"continuous-integration/jenkins\", \"description\": \"'The build is pending..'\", \"target_url\": \"$BUILD_URL\"}"
                 '''
             }
         }
@@ -51,14 +51,14 @@ pipeline {
             sh '''
                curl "https://api.github.com/repos/$GH_USERNAME/$GH_REPO/statuses/$GIT_COMMIT?access_token=$GH_REPO_TOKEN" \
                    -H "Content-Type: application/json" -X POST \
-                   -d "{\"state\": \"success\",\"context\": \"continuous-integration/jenkins\", \"description\": \"The build has succeeded!\", \"target_url\": \"$BUILD_URL\"}"
+                   -d "{\"state\": \"success\",\"context\": \"continuous-integration/jenkins\", \"description\": \"'The build has succeeded!'\", \"target_url\": \"$BUILD_URL\"}"
             '''
         }
         failure {
             sh '''
                curl "https://api.github.com/repos/$GH_USERNAME/$GH_REPO/statuses/$GIT_COMMIT?access_token=$GH_REPO_TOKEN" \
                    -H "Content-Type: application/json" -X POST \
-                   -d "{\"state\": \"failure\",\"context\": \"continuous-integration/jenkins\", \"description\": \"The build has failed!\", \"target_url\": \"$BUILD_URL\"}"
+                   -d "{\"state\": \"failure\",\"context\": \"continuous-integration/jenkins\", \"description\": \"'The build has failed!'\", \"target_url\": \"$BUILD_URL\"}"
             '''
         }
     }
