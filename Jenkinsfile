@@ -16,6 +16,7 @@ pipeline {
         stage ('Status') {
             steps {
                 echo 'Updating GitHub status...'
+                sh "chown +x $GH_SCRIPT"
                 sh "./$GH_SCRIPT pending $GH_USERNAME $GH_REPO $GH_REPO_TOKEN $GIT_COMMIT $BUILD_URL"
             }
         }
