@@ -9,7 +9,6 @@ pipeline {
         GH_REPO_TOKEN = credentials('GH_Repo_Status')
         GH_REPO = 'Recipe_API_Project'
         GH_USERNAME = 'ziibii88'
-        URL = 'http://220.240.20.111:8080'
     }
 
     stages {
