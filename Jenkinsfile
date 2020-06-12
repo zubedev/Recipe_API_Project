@@ -31,7 +31,7 @@ pipeline {
             steps {
                 echo 'Testing application...'
                 // -T flag need to disable TTY input
-                sh 'docker-compose exec -T app coverage manage.py test'
+                sh 'docker-compose exec -T app coverage run manage.py test'
                 sh 'docker-compose exec -T app coverage xml -o coverage.xml'
                 sh 'docker-compose exec -T app coverage report'
                 sh 'docker-compose exec -T app flake8'
