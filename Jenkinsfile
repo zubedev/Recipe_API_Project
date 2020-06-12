@@ -41,7 +41,7 @@ pipeline {
 
     post {
         always {
-            cobertura coberturaReportFile: 'coverage.xml' enableNewApi: true
+            cobertura coberturaReportFile: 'coverage.xml', enableNewApi: true
             sh 'docker-compose down'
         }
         success {
