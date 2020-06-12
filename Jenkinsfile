@@ -41,9 +41,7 @@ pipeline {
 
     post {
         always {
-            sh 'ls -al'
-            junit '**/coverage.xml'
-            step([$class: 'CoberturaPublisher', autoUpdateHealth: false, autoUpdateStability: false, coberturaReportFile: '**/coverage.xml', failUnhealthy: false, failUnstable: false, maxNumberOfBuilds: 0, onlyStable: false, sourceEncoding: 'ASCII', zoomCoverageChart: false])
+            cobertura coberturaReportFile: 'coverage.xml' enableNewApi: true
             sh 'docker-compose down'
         }
         success {
