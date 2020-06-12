@@ -16,9 +16,7 @@ pipeline {
         stage ('Status') {
             steps {
                 echo 'Updating GitHub status...'
-                sh "ls -al"
                 sh "chmod 775 $GH_SCRIPT"
-                sh "ls -al"
                 sh "./$GH_SCRIPT pending $GH_OWNER $GH_REPO $GH_TOKEN $GIT_COMMIT $BUILD_URL"
             }
         }
@@ -37,11 +35,6 @@ pipeline {
                 sh 'docker-compose exec -T app flake8'
             }
         }
-        // stage('Deploy') {
-        //     steps {
-        //         echo 'Deploying....'
-        //     }
-        // }
     }
 
     post {
