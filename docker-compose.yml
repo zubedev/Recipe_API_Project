@@ -26,7 +26,5 @@ services:
       - DB_NAME=recipe_api_db
       - DB_USER=recipe_api_user
       - DB_PASS=PostgresPwd
-      - DEBUG=True
-      - ALLOWED_HOST=[]
     depends_on:
       - db
