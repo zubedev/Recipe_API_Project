@@ -16,7 +16,7 @@ COPY . /Recipe_API_Project
 
 RUN mkdir -p /web/media
 RUN mkdir -p /web/static
-RUN adduser -D centos
-RUN chown -R centos:centos /web/
+RUN adduser -D jenkins
+RUN chown -R jenkins:jenkins /web/
 RUN chmod -R 755 /web
-USER centos
+USER jenkins
