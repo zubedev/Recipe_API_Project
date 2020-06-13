@@ -16,7 +16,8 @@ COPY . /Recipe_API_Project
 
 RUN mkdir -p /web/media
 RUN mkdir -p /web/static
-RUN adduser -D jenkins
+RUN groupadd -g 994 jenkins
+RUN useradd -m -u 997 -g jenkins jenkins
 RUN chown -R jenkins:jenkins /web/
 RUN chmod -R 755 /web
 USER jenkins
