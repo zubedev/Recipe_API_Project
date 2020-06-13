@@ -10,7 +10,6 @@ services:
       - POSTGRES_PASSWORD=PostgresPwd
   app:
     container_name: recipe_api_app
-    restart: always
     build:
       context: .
     ports:
@@ -18,10 +17,7 @@ services:
     volumes:
     - .:/Recipe_API_Project
     command: >
-      sh -c "cd Recipe_API_Project &&
-             local_settings.example local_settings.py &&
-             cd .. &&
-             python manage.py wait_for_db &&
+      sh -c "python manage.py wait_for_db &&
              python manage.py makemigrations &&
              python manage.py migrate &&
              python manage.py runserver 0.0.0.0:8000"
@@ -30,5 +26,7 @@ services:
       - DB_NAME=recipe_api_db
       - DB_USER=recipe_api_user
       - DB_PASS=PostgresPwd
+      - DEBUG=True
+      - ALLOWED_HOST=[]
     depends_on:
       - db
