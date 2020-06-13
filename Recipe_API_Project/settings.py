@@ -11,10 +11,10 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
-# try:
-#     from .local_settings import *
-# except ImportError:
-#     raise Exception('Project requires local_settings.py to be configured')
+try:
+    from .local_settings import *
+except ImportError:
+    raise Exception('Project requires local_settings.py to be configured')
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -27,9 +27,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '-65jrlnxr18g@j%ozoa%@zd1m6anv+tlkum9&yauggt)p8^a2u'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get('DEBUG', True)
+DEBUG = os.environ.get('DEBUG', DEBUG)
 
-ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', [])
+ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', ALLOWED_HOSTS)
 
 
 # Application definition
@@ -88,10 +88,10 @@ DATABASES = {
     # postgresql-11
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'HOST': os.environ.get('DB_HOST', 'localhost'),
-        'NAME': os.environ.get('DB_NAME', 'recipe_api_db'),
-        'USER': os.environ.get('DB_USER', 'recipe_api_user'),
-        'PASSWORD': os.environ.get('DB_PASS', 'PostgresPwd'),
+        'HOST': os.environ.get('DB_HOST', DB_HOST),
+        'NAME': os.environ.get('DB_NAME', DB_NAME),
+        'USER': os.environ.get('DB_USER', DB_USER),
+        'PASSWORD': os.environ.get('DB_PASS', DB_PASS),
     }
     # db.sqlite3
     # 'default': {

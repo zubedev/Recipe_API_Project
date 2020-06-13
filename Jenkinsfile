@@ -23,6 +23,7 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'Building Docker container...'
+                sh 'cp Recipe_API_Project/local_settings.example Recipe_API_Project/local_settings.py'
                 sh 'docker-compose build'
                 sh 'docker-compose up -d'
             }
