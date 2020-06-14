@@ -23,8 +23,10 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'Building Docker container...'
-                sh 'cp Recipe_API_Project/local_settings.example Recipe_API_Project/local_settings.py'
+                sh "cp $GH_REPO/local_settings.example $GH_REPO/local_settings.py"
                 sh 'docker-compose build'
+                sh 'docker-compose up -d db'
+                sleep 5  // allow the db to start up and accept connections
                 sh 'docker-compose up -d'
             }
         }
