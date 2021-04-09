@@ -1,8 +1,8 @@
 """test_recipe_api.py"""
 
-import tempfile
-import os
-from PIL import Image
+# import tempfile
+# import os
+# from PIL import Image
 
 from django.contrib.auth import get_user_model
 from django.test import TestCase
@@ -78,8 +78,8 @@ class PrivateRecipeApiTests(TestCase):
         """Test retrieving list of recipes"""
         sample_recipe(user=self.user)
         sample_recipe(user=self.user)
-        recipes = Recipe.objects.all().order_by('-id')
-        serializer = RecipeSerializer(recipes, many=True)
+        # recipes = Recipe.objects.all().order_by('-id')
+        # serializer = RecipeSerializer(recipes, many=True)
 
         res = self.client.get(RECIPES_URL)
 
@@ -236,13 +236,14 @@ class PrivateRecipeApiTests(TestCase):
 #     def test_upload_image_bad_request(self):
 #         """Test uploading an invalid image"""
 #         url = image_upload_url(self.recipe.id)
-#         res = self.client.post(url, {'image': 'notimage'}, format='multipart')
+#         res = self.client.post(
+#             url, {'image': 'notimage'}, format='multipart')
 #         self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
 #
 #     def test_filter_recipes_by_tags(self):
 #         """Test returning recipes with specific tags"""
 #         recipe1 = sample_recipe(user=self.user, title='Thai vegetable curry')
-#         recipe2 = sample_recipe(user=self.user, title='Aubergine with tahini')
+#         recipe2 = sample_recipe(user=self.user, title='Aubergine wit tahini')
 #         tag1 = sample_tag(user=self.user, name='Vegan')
 #         tag2 = sample_tag(user=self.user, name='Vegetarian')
 #         recipe1.tags.add(tag1)
