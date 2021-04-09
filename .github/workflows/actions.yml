@@ -61,7 +61,7 @@ jobs:
       # setup project, make directories, copy local_settings
       - name: configure project
         run: |
-          mkdir -p logs && mkdir -p web/media && web/static
+          mkdir -p logs && mkdir -p web/media && mkdir -p web/static
           cp Recipe_API_Project/local_settings.example Recipe_API_Project/local_settings.py
       # initialize project and migrate
       - name: run migrations
