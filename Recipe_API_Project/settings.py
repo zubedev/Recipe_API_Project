@@ -78,6 +78,8 @@ TEMPLATES = [
     },
 ]
 
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
 WSGI_APPLICATION = 'Recipe_API_Project.wsgi.application'
 
 
