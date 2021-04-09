@@ -7,4 +7,4 @@ ALLOWED_HOSTS = ['*']
 DB_HOST = 'localhost'
 DB_NAME = 'recipe_api_db'
 DB_USER = 'recipe_api_user'
-DB_PASS = 'password'
+DB_PASS = 'recipe_api_pass'
